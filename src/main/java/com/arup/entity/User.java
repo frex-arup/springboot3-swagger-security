@@ -15,7 +15,7 @@ public class User {
 
     @Id
     @Tsid
-    private Long id;
+    private String id;
 
     private String username;
 

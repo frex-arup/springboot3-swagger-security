@@ -14,12 +14,12 @@ public class AuthResponse {
     private String accessToken;
 
     @JsonProperty("expires_in")
-    private Integer expiresIn;
+    private Long expiresIn;
     @JsonProperty("refresh_token")
     private String refreshToken;
 
     @JsonProperty("refresh_token_expires_in")
-    private Integer refreshTokenExpiresIn;
+    private Long refreshTokenExpiresIn;
 
     @JsonProperty("token_type")
     private String tokenType;

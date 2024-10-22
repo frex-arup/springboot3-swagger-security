@@ -9,9 +9,10 @@ import java.io.Serializable;
 @Setter
 public class UserDto implements Serializable {
 
-    private Long id;
+    private String id;
     private String username;
     private String email;
+    private String password;
     private String firstName;
     private String lastName;
     private String mobile;

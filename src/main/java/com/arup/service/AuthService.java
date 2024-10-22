@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,11 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    @Value("${application.security.jwt.expiration}")
+    private long jwtExpiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshExpiration;
 
     public AuthResponse authenticate(AuthRequest request) {
         authenticationManager.authenticate(
@@ -43,9 +49,9 @@ public class AuthService {
 //        saveUserToken(user, jwtToken);
         return AuthResponse.builder()
                 .accessToken(accessToken)
-                .expiresIn(jwtService.extractExpiration(accessToken).getSeconds())
+                .expiresIn(jwtExpiration / 1000)
                 .refreshToken(refreshToken)
-                .refreshTokenExpiresIn(jwtService.extractExpiration(refreshToken).getSeconds())
+                .refreshTokenExpiresIn(refreshExpiration / 1000)
                 .tokenType("Bearer")
                 .build();
     }
@@ -74,9 +80,9 @@ public class AuthService {
 //                saveUserToken(user, accessToken);
                 var authResponse = AuthResponse.builder()
                         .accessToken(accessToken)
-                        .expiresIn(jwtService.extractExpiration(accessToken).getSeconds())
+                        .expiresIn(jwtExpiration / 1000)
                         .refreshToken(refreshToken)
-                        .refreshTokenExpiresIn(jwtService.extractExpiration(refreshToken).getSeconds())
+                        .refreshTokenExpiresIn(refreshExpiration / 1000)
                         .tokenType("Bearer")
                         .build();
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
