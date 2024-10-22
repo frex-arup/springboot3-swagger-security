@@ -1,0 +1,8 @@
+package com.arup.entity;
+
+import jakarta.persistence.Entity;
+
+@Entity
+@Ge
+public class User {
+}
